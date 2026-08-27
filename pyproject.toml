@@ -1,0 +1,24 @@
+[project]
+name = "template_filler"
+version = "0.0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "python-docx==1.2.0",
+    "lxml==5.3.0",
+    "openpyxl==3.1.5",
+]
+
+[dependency-groups]
+dify = ["dify-plugin==0.9.1"]
+dev = ["pytest>=8.0,<9.0"]
+
+[project.scripts]
+template-filler = "template_filler.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.10.0,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "template_filler"
+module-root = ""

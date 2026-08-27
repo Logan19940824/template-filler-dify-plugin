@@ -1,0 +1,21 @@
+identity:
+  name: parse_word_template
+  author: modsdom
+  label: {en_US: Parse Word template, zh_Hans: 解析 Word 模板, pt_BR: Parse Word template, ja_JP: Word テンプレート解析}
+description:
+  human:
+    en_US: 'Download a DOCX template and list all {{name}} placeholders.'
+    zh_Hans: '下载 DOCX 模板并列出所有 {{name}} 占位符。'
+    pt_BR: Baixar um modelo DOCX e listar os placeholders.
+    ja_JP: DOCX テンプレートをダウンロードしてプレースホルダーを一覧表示します。
+  llm: Download a DOCX template and list all placeholders.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Template URL, zh_Hans: 模板 URL, pt_BR: URL do modelo, ja_JP: テンプレート URL}
+    human_description: {en_US: Public HTTP(S) URL of a DOCX file., zh_Hans: DOCX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público de um arquivo DOCX., ja_JP: DOCX ファイル的公開 HTTP(S) URL。}
+    llm_description: Public HTTP(S) URL of the DOCX template.
+    form: llm
+extra:
+  python: {source: tools/parse_word.py}

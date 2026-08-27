@@ -1,0 +1,24 @@
+identity:
+  name: fill_excel_template
+  author: modsdom
+  label: {en_US: Fill Excel template, zh_Hans: 填充 Excel 模板, pt_BR: Preencher modelo Excel, ja_JP: Excel テンプレート入力}
+description:
+  human: {en_US: Replace placeholders in an XLSX template and return the file., zh_Hans: 替换 XLSX 模板中的占位符并返回文件。, pt_BR: Substituir placeholders em um modelo XLSX e retornar o arquivo., ja_JP: XLSX テンプレートのプレースホルダーを置換してファイルを返します。}
+  llm: Replace placeholders in an XLSX template and return the generated file.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Template URL, zh_Hans: 模板 URL, pt_BR: URL do modelo, ja_JP: テンプレート URL}
+    human_description: {en_US: Public HTTP(S) URL of an XLSX file., zh_Hans: XLSX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público de um arquivo XLSX., ja_JP: XLSX ファイル的公開 HTTP(S) URL。}
+    llm_description: Public HTTP(S) URL of the XLSX template.
+    form: llm
+  - name: values
+    type: string
+    required: true
+    label: {en_US: Placeholder values JSON, zh_Hans: 占位符值 JSON, pt_BR: JSON de valores, ja_JP: プレースホルダー値 JSON}
+    human_description: {en_US: JSON object mapping placeholder names to values., zh_Hans: 将占位符名称映射到值的 JSON 对象。, pt_BR: Objeto JSON que mapeia nomes para valores., ja_JP: プレースホルダー名和值的 JSON 对象。}
+    llm_description: 'JSON object such as {"name":"Alice"}.'
+    form: llm
+extra:
+  python: {source: tools/fill_excel.py}

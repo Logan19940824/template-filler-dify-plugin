@@ -1,0 +1,39 @@
+version: 0.0.1
+type: plugin
+author: modsdom
+name: template_filler
+label:
+  en_US: Template Filler
+  ja_JP: テンプレート入力ツール
+  zh_Hans: 模板填充器
+  pt_BR: Preenchedor de Modelos
+description:
+  en_US: Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling.
+  ja_JP: Word/Excel テンプレートの URL とプレースホルダー値を渡すと、テンプレートをダウンロードして値を入力し、元のレイアウトとスタイルを維持したファイルを返します。
+  zh_Hans: 传入 Word 或 Excel 模板的 URL 以及占位符值映射，插件会下载模板并填充内容，返回保持原始布局和样式的文件。
+  pt_BR: Informe a URL de um modelo Word ou Excel e um mapa de valores dos marcadores. O plugin baixa o modelo, preenche os valores e retorna um arquivo mantendo o layout e os estilos originais.
+icon: icon.png
+icon_dark: icon-dark.png
+resource:
+  memory: 536870912
+  permission:
+    tool:
+      enabled: true
+    app:
+      enabled: true
+plugins:
+  tools:
+    - provider/template_filler.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: null
+created_at: 2026-08-27T11:06:32.1160934+08:00
+privacy: PRIVACY.md
+verified: false

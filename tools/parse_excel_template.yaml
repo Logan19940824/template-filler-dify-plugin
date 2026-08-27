@@ -1,0 +1,21 @@
+identity:
+  name: parse_excel_template
+  author: modsdom
+  label: {en_US: Parse Excel template, zh_Hans: 解析 Excel 模板, pt_BR: Analisar modelo Excel, ja_JP: Excel テンプレート解析}
+description:
+  human:
+    en_US: Download an XLSX template and list placeholders with sheet and cell locations.
+    zh_Hans: 下载 XLSX 模板并列出带工作表和单元格位置的占位符。
+    pt_BR: Baixar um modelo XLSX e listar placeholders com planilha e célula.
+    ja_JP: XLSX テンプレートのプレースホルダーとシート・セル位置を一覧表示します。
+  llm: Download an XLSX template and list placeholders with sheet and cell locations.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Template URL, zh_Hans: 模板 URL, pt_BR: URL do modelo, ja_JP: テンプレート URL}
+    human_description: {en_US: Public HTTP(S) URL of an XLSX file., zh_Hans: XLSX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público de um arquivo XLSX., ja_JP: XLSX ファイル的公開 HTTP(S) URL。}
+    llm_description: Public HTTP(S) URL of the XLSX template.
+    form: llm
+extra:
+  python: {source: tools/parse_excel.py}

@@ -1,0 +1,65 @@
+identity:
+  author: "modsdom"
+  name: "template_filler"
+  label:
+    en_US: "template_filler"
+    zh_Hans: "template_filler"
+    pt_BR: "template_filler"
+    ja_JP: "template_filler"
+  description:
+    en_US: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
+    zh_Hans: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
+    pt_BR: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
+    ja_JP: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
+  icon: "icon.svg"
+
+#########################################################################################
+# If you want to support OAuth, you can uncomment the following code.
+#########################################################################################
+# oauth_schema:
+#   client_schema:
+#     - name: "client_id"
+#       type: "secret-input"
+#       required: true
+#       url: https://example.com/oauth/authorize
+#       placeholder:
+#         en_US: "Please input your Client ID"
+#         zh_Hans: "请输入你的 Client ID"
+#         pt_BR: "Insira seu Client ID"
+#       help:
+#         en_US: "Client ID is used to authenticate requests to the example.com API."
+#         zh_Hans: "Client ID 用于认证请求到 example.com API。"
+#         pt_BR: "Client ID é usado para autenticar solicitações à API do example.com."
+#       label:
+#         zh_Hans: "Client ID"
+#         en_US: "Client ID"
+#     - name: "client_secret"
+#       type: "secret-input"
+#       required: true
+#       url: https://example.com/oauth/authorize
+#       placeholder:
+#         en_US: "Please input your Client Secret"
+#         zh_Hans: "请输入你的 Client Secret"
+#         pt_BR: "Insira seu Client Secret"
+#       help:
+#         en_US: "Client Secret is used to authenticate requests to the example.com API."
+#         zh_Hans: "Client Secret 用于认证请求到 example.com API。"
+#         pt_BR: "Client Secret é usado para autenticar solicitações à API do example.com."
+#       label:
+#         zh_Hans: "Client Secret"
+#         en_US: "Client Secret"
+#   credentials_schema:
+#     - name: "access_token"
+#       type: "secret-input"
+#       label:
+#         zh_Hans: "Access Token"
+#         en_US: "Access Token"
+
+tools:
+  - tools/parse_word_template.yaml
+  - tools/fill_word_template.yaml
+  - tools/parse_excel_template.yaml
+  - tools/fill_excel_template.yaml
+extra:
+  python:
+    source: provider/template_filler.py

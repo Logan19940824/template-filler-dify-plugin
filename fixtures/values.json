@@ -1,0 +1,20 @@
+{
+  "customer_name": "张三",
+  "order_id": "ORD-2026-001",
+  "shipping_address": "东京都千代田区",
+  "modules": [
+    {
+      "name": "用户端",
+      "features": [
+        {"name": "登录", "price": 100},
+        {"name": "注册", "price": 80}
+      ]
+    },
+    {
+      "name": "管理端",
+      "features": [
+        {"name": "审核", "price": 120}
+      ]
+    }
+  ]
+}
