@@ -130,6 +130,9 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.pytest-tmp/
+.tmp/
+*.difypkg
 env/
 venv/
 ENV/
