@@ -3,8 +3,8 @@ identity:
   author: modsdom
   label: {en_US: Fill Excel template, zh_Hans: 填充 Excel 模板, pt_BR: Preencher modelo Excel, ja_JP: Excel テンプレート入力}
 description:
-  human: {en_US: Replace placeholders in an XLSX template and return the file., zh_Hans: 替换 XLSX 模板中的占位符并返回文件。, pt_BR: Substituir placeholders em um modelo XLSX e retornar o arquivo., ja_JP: XLSX テンプレートのプレースホルダーを置換してファイルを返します。}
-  llm: Replace placeholders in an XLSX template and return the generated file.
+  human: {en_US: Replace placeholders in an XLSX template and return a download link., zh_Hans: 替换 XLSX 模板中的占位符并返回下载链接。, pt_BR: Substituir placeholders em um modelo XLSX e retornar um link de download., ja_JP: XLSX テンプレートのプレースホルダーを置換してダウンロードリンクを返します。}
+  llm: Replace placeholders in an XLSX template, upload the generated file to Dify, and return its download link.
 parameters:
   - name: template_url
     type: string

@@ -1,4 +1,4 @@
-version: 0.0.1
+version: 0.0.2
 type: plugin
 author: modsdom
 name: template_filler
@@ -8,10 +8,10 @@ label:
   zh_Hans: 模板填充器
   pt_BR: Preenchedor de Modelos
 description:
-  en_US: Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling.
-  ja_JP: Word/Excel テンプレートの URL とプレースホルダー値を渡すと、テンプレートをダウンロードして値を入力し、元のレイアウトとスタイルを維持したファイルを返します。
-  zh_Hans: 传入 Word 或 Excel 模板的 URL 以及占位符值映射，插件会下载模板并填充内容，返回保持原始布局和样式的文件。
-  pt_BR: Informe a URL de um modelo Word ou Excel e um mapa de valores dos marcadores. O plugin baixa o modelo, preenche os valores e retorna um arquivo mantendo o layout e os estilos originais.
+  en_US: Fill placeholders in Word/Excel templates, or convert Markdown to downloadable DOCX and XLSX files.
+  ja_JP: Word/Excel テンプレートのプレースホルダーを入力し、Markdown をダウンロード可能な DOCX/XLSX に変換します。
+  zh_Hans: 填充 Word/Excel 模板中的占位符，或将 Markdown 转换为可下载的 DOCX 和 XLSX 文件。
+  pt_BR: Preencha marcadores em modelos Word/Excel ou converta Markdown em arquivos DOCX e XLSX para download.
 icon: icon.png
 icon_dark: icon-dark.png
 resource:

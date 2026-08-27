@@ -10,7 +10,19 @@ from urllib.request import Request, urlopen
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
 
-from template_filler.services import fill_excel, fill_word, parse_excel, parse_values, parse_word
+from template_filler.services import (
+    fill_excel,
+    fill_word,
+    markdown_to_excel,
+    markdown_to_word,
+    parse_excel,
+    parse_values,
+    parse_word,
+)
+
+
+WORD_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+EXCEL_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 
 def _download(url: str, suffix: str) -> Path:
@@ -48,6 +60,30 @@ def _fill(url: str, suffix: str, handler, values: dict[str, Any]) -> bytes:
         output.unlink(missing_ok=True)
 
 
+def _output_filename(parameters: dict[str, Any], default: str, suffix: str) -> str:
+    requested = str(parameters.get("output_filename") or default).strip()
+    filename = Path(requested).name
+    if not filename or filename in {".", ".."}:
+        filename = default
+    if not filename.lower().endswith(suffix):
+        filename += suffix
+    return filename
+
+
+def _upload_result(
+    tool: Tool,
+    filename: str,
+    blob: bytes,
+    mime_type: str,
+) -> ToolInvokeMessage:
+    uploaded = tool.session.file.upload(filename, blob, mime_type)
+    download_url = str(uploaded.preview_url or "").strip()
+    if not download_url:
+        raise RuntimeError("Dify uploaded the file but did not return a download URL")
+
+    return tool.create_link_message(download_url)
+
+
 class ParseWordTemplateTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
         yield self.create_json_message(_parse(tool_parameters["template_url"], ".docx", parse_word))
@@ -56,7 +92,7 @@ class ParseWordTemplateTool(Tool):
 class FillWordTemplateTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
         blob = _fill(tool_parameters["template_url"], ".docx", fill_word, parse_values(tool_parameters["values"]))
-        yield self.create_blob_message(blob=blob, meta={"mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "filename": "filled.docx"})
+        yield _upload_result(self, "filled.docx", blob, WORD_MIME_TYPE)
 
 
 class ParseExcelTemplateTool(Tool):
@@ -67,4 +103,26 @@ class ParseExcelTemplateTool(Tool):
 class FillExcelTemplateTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
         blob = _fill(tool_parameters["template_url"], ".xlsx", fill_excel, parse_values(tool_parameters["values"]))
-        yield self.create_blob_message(blob=blob, meta={"mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "filename": "filled.xlsx"})
+        yield _upload_result(self, "filled.xlsx", blob, EXCEL_MIME_TYPE)
+
+
+class MarkdownToWordTool(Tool):
+    def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+        blob = markdown_to_word(tool_parameters["markdown_content"])
+        yield _upload_result(
+            self,
+            _output_filename(tool_parameters, "markdown.docx", ".docx"),
+            blob,
+            WORD_MIME_TYPE,
+        )
+
+
+class MarkdownToExcelTool(Tool):
+    def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+        blob = markdown_to_excel(tool_parameters["markdown_content"])
+        yield _upload_result(
+            self,
+            _output_filename(tool_parameters, "markdown.xlsx", ".xlsx"),
+            blob,
+            EXCEL_MIME_TYPE,
+        )

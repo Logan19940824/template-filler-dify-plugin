@@ -115,7 +115,7 @@ Study these examples to understand plugin implementation:
 
 #### Manual Packaging
 ```bash
-dify-plugin plugin package ./YOUR_PLUGIN_DIR
+dify plugin package ./YOUR_PLUGIN_DIR
 ```
 
 #### Automated GitHub Workflow

@@ -7,10 +7,10 @@ identity:
     pt_BR: "template_filler"
     ja_JP: "template_filler"
   description:
-    en_US: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
-    zh_Hans: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
-    pt_BR: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
-    ja_JP: "Pass a Word/Excel template URL and a placeholder-value map; the plugin downloads the template, fills placeholders, and returns a file that keeps the original layout and styling."
+    en_US: "Fill placeholders in Word/Excel templates, or convert Markdown to downloadable DOCX and XLSX files."
+    zh_Hans: "填充 Word/Excel 模板中的占位符，或将 Markdown 转换为可下载的 DOCX 和 XLSX 文件。"
+    pt_BR: "Preencha marcadores em modelos Word/Excel ou converta Markdown em arquivos DOCX e XLSX para download."
+    ja_JP: "Word/Excel テンプレートのプレースホルダーを入力し、Markdown をダウンロード可能な DOCX/XLSX に変換します。"
   icon: "icon.svg"
 
 #########################################################################################
@@ -60,6 +60,8 @@ tools:
   - tools/fill_word_template.yaml
   - tools/parse_excel_template.yaml
   - tools/fill_excel_template.yaml
+  - tools/markdown_to_word.yaml
+  - tools/markdown_to_excel.yaml
 extra:
   python:
     source: provider/template_filler.py
