@@ -8,6 +8,10 @@
 
 Fill placeholders in Word/Excel templates, or convert Markdown to downloadable DOCX and XLSX files.
 
+### Source Repository
+
+https://github.com/Logan19940824/template-filler-dify-plugin
+
 ### Setup
 
 Requires Python 3.12. Install local dependencies with `uv sync`; Dify packaging uses the locked runtime dependencies from `pyproject.toml`.
