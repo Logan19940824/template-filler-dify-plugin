@@ -2,6 +2,8 @@ version: 0.0.2
 type: plugin
 author: modsdom
 name: template_filler
+repo: https://github.com/Logan19940824/template-filler-dify-plugin
+contact: 759592528@qq.com
 label:
   en_US: Template Filler
   ja_JP: テンプレート入力ツール
