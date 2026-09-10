@@ -1,0 +1,14 @@
+identity:
+  name: template_filler_usage_guide
+  author: modsdom
+  label: {en_US: Template Filler usage guide, zh_Hans: 模板填充器使用指南, pt_BR: Guia de uso do Template Filler, ja_JP: Template Filler 使用ガイド}
+description:
+  human:
+    en_US: Return a Markdown guide for interpreting workbooks, creating placeholders, generating values, and using Template Filler tools.
+    zh_Hans: 返回 Markdown 格式的指南，说明如何解读工作簿、创建占位符、生成填充值和使用模板填充器工具。
+    pt_BR: Retornar o fluxo recomendado, entradas de ferramentas, esquema de operações e regras de segurança do Template Filler.
+    ja_JP: Template Filler の推奨フロー、ツール入力、操作スキーマ、安全ルールを返します。
+  llm: Call this tool before using other Template Filler tools. It returns a complete Markdown guide for Excel analysis, placeholder planning, value generation, and template filling.
+parameters: []
+extra:
+  python: {source: tools/template_filler_usage_guide.py}

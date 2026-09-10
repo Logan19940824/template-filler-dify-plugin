@@ -1,0 +1,32 @@
+identity:
+  name: insert_excel_placeholders
+  author: modsdom
+  label: {en_US: Insert Excel placeholders, zh_Hans: 插入 Excel 占位符, pt_BR: Inserir placeholders no Excel, ja_JP: Excel プレースホルダーを挿入}
+description:
+  human:
+    en_US: Insert validated placeholders into an XLSX workbook and return a download link.
+    zh_Hans: 将经过校验的占位符插入 XLSX 工作簿并返回下载链接。
+    pt_BR: Inserir placeholders validados em uma pasta de trabalho XLSX e retornar um link de download.
+    ja_JP: 検証済みのプレースホルダーを XLSX ブックに挿入し、ダウンロードリンクを返します。
+  llm: Insert placeholders into specified XLSX cells. Operations can replace an existing cell or insert one styled detail row per worksheet. Validate the original values before editing. Styles and workbook structure are preserved.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Workbook URL, zh_Hans: 工作簿 URL, pt_BR: URL da pasta de trabalho, ja_JP: ブック URL}
+    human_description: {en_US: Public HTTP(S) URL of an XLSX file., zh_Hans: XLSX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público de um arquivo XLSX., ja_JP: XLSX ファイルの公開 HTTP(S) URL。}
+    llm_description: Public HTTP(S) URL of the original XLSX workbook.
+    form: llm
+  - name: operations
+    type: string
+    required: true
+    label: {en_US: Placeholder operations JSON, zh_Hans: 占位符操作 JSON, pt_BR: JSON de operações de placeholders, ja_JP: プレースホルダー操作 JSON}
+    human_description:
+      en_US: "JSON object containing replace_cell or insert_row operations."
+      zh_Hans: "包含 replace_cell 或 insert_row 操作的 JSON 对象。"
+      pt_BR: "Objeto JSON contendo operações replace_cell ou insert_row."
+      ja_JP: "replace_cell または insert_row 操作を含む JSON オブジェクト。"
+    llm_description: 'A JSON string whose root must be exactly {"operations":[...]}, never a bare array. Example: {"operations":[{"type":"replace_cell","sheet":"Quote","cell":"B3","expected_value":"Example Co","placeholder":"{{customer_name}}"}]}.'
+    form: llm
+extra:
+  python: {source: tools/insert_excel.py}

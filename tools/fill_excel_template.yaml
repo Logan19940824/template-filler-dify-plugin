@@ -18,7 +18,7 @@ parameters:
     required: true
     label: {en_US: Placeholder values JSON, zh_Hans: 占位符值 JSON, pt_BR: JSON de valores, ja_JP: プレースホルダー値 JSON}
     human_description: {en_US: JSON object mapping placeholder names to values., zh_Hans: 将占位符名称映射到值的 JSON 对象。, pt_BR: Objeto JSON que mapeia nomes para valores., ja_JP: プレースホルダー名和值的 JSON 对象。}
-    llm_description: 'JSON object such as {"name":"Alice"}.'
+    llm_description: 'A JSON string whose root is the business-field object, such as {"customer_name":"Alice","items":[{"name":"Service A"}]}. Do not pass a bare array, Markdown, or {"values":{...}}.'
     form: llm
 extra:
   python: {source: tools/fill_excel.py}

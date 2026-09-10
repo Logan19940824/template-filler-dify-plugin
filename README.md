@@ -1,7 +1,7 @@
 ## template_filler
 
 **Author:** modsdom
-**Version:** 0.0.2
+**Version:** 0.1.3
 **Type:** tool
 
 ### Description
@@ -20,7 +20,7 @@ Template URLs are validated by file content, not by URL suffix or response heade
 
 ### Usage
 
-The plugin provides six tools. The four template tools use a public `http` or `https` URL. Placeholders use the `{{name}}` syntax. The parse tools return a `values` object that can be completed and passed to the corresponding fill tool as JSON, for example `{"customer_name":"Alice"}`. Generated files are uploaded to Dify and returned as download links, which also work in Agent nodes that cannot consume inline binary messages.
+The plugin provides nine tools. Call `template_filler_usage_guide` first for the recommended workflow and JSON schemas. The template tools use a public `http` or `https` URL. `inspect_excel_workbook` returns sheet layout metadata and non-empty cell data for an XLSX workbook. `insert_excel_placeholders` validates and inserts placeholders into existing XLSX cells or one styled detail row per worksheet. Placeholders use the `{{name}}` syntax. The parse tools return a `values` object that can be completed and passed to the corresponding fill tool as JSON, for example `{"customer_name":"Alice"}`. Generated files are uploaded to Dify and returned as download links, which also work in Agent nodes that cannot consume inline binary messages.
 
 `markdown_to_word` converts headings, paragraphs, emphasis, lists, quotes, code blocks, and tables into DOCX. `markdown_to_excel` creates one formatted worksheet per Markdown table; Markdown without tables is exported as structured content rows.
 

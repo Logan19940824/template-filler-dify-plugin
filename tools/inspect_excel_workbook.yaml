@@ -1,0 +1,21 @@
+identity:
+  name: inspect_excel_workbook
+  author: modsdom
+  label: {en_US: Inspect Excel workbook, zh_Hans: 检查 Excel 工作簿, pt_BR: Inspecionar pasta de trabalho Excel, ja_JP: Excel ブックを検査}
+description:
+  human:
+    en_US: Download an XLSX workbook and return its sheets, merged ranges, and non-empty cell data.
+    zh_Hans: 下载 XLSX 工作簿并返回工作表、合并区域和非空单元格数据。
+    pt_BR: Baixar uma pasta de trabalho XLSX e retornar planilhas, intervalos mesclados e dados de células não vazias.
+    ja_JP: XLSX ブックをダウンロードし、シート、結合範囲、空でないセルのデータを返します。
+  llm: Inspect an XLSX workbook before proposing template placeholders. Return sheet names, layout metadata, and non-empty cells with coordinates, values, formulas, data types, and style IDs. This tool does not modify the workbook.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Workbook URL, zh_Hans: 工作簿 URL, pt_BR: URL da pasta de trabalho, ja_JP: ブック URL}
+    human_description: {en_US: Public HTTP(S) URL of an XLSX file., zh_Hans: XLSX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público de um arquivo XLSX., ja_JP: XLSX ファイルの公開 HTTP(S) URL。}
+    llm_description: Public HTTP(S) URL of the XLSX workbook to inspect.
+    form: llm
+extra:
+  python: {source: tools/inspect_excel.py}

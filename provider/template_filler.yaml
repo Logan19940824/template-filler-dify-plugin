@@ -59,6 +59,9 @@ tools:
   - tools/parse_word_template.yaml
   - tools/fill_word_template.yaml
   - tools/parse_excel_template.yaml
+  - tools/inspect_excel_workbook.yaml
+  - tools/insert_excel_placeholders.yaml
+  - tools/template_filler_usage_guide.yaml
   - tools/fill_excel_template.yaml
   - tools/markdown_to_word.yaml
   - tools/markdown_to_excel.yaml

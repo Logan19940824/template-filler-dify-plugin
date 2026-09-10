@@ -10,6 +10,7 @@ from tools.template_filler import (
     FillWordTemplateTool,
     MarkdownToExcelTool,
     MarkdownToWordTool,
+    TemplateFillerUsageGuideTool,
 )
 
 
@@ -109,3 +110,17 @@ def test_upload_requires_download_url(monkeypatch: pytest.MonkeyPatch) -> None:
                 {"markdown_content": "# Title"}
             )
         )
+
+
+def test_usage_guide_returns_markdown_text():
+    tool = object.__new__(TemplateFillerUsageGuideTool)
+    tool.response_type = ToolInvokeMessage
+    message = list(tool._invoke({}))[0]
+
+    assert message.type == InvokeMessage.MessageType.TEXT
+    assert message.message.text.startswith("# Template Filler 使用指南")
+    for heading in ("如何解读 Excel 原始单元格数据", "如何构建占位符规则", "如何生成占位符数据", "如何调用工具"):
+        assert heading in message.message.text
+    assert '"operations": "{\\"operations\\":[' in message.message.text
+    assert '{"operations":[{"type":"replace_cell"' in message.message.text
+    assert '`{"values":{...}}`' in message.message.text

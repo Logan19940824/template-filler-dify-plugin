@@ -1,10 +1,10 @@
 # 模板填充器
 
-插件提供六个工具：`parse_word_template`、`fill_word_template`、`parse_excel_template`、`fill_excel_template`、`markdown_to_word`、`markdown_to_excel`。
+插件提供九个工具：`template_filler_usage_guide`、`parse_word_template`、`fill_word_template`、`parse_excel_template`、`inspect_excel_workbook`、`insert_excel_placeholders`、`fill_excel_template`、`markdown_to_word`、`markdown_to_excel`。建议智能体先调用 `template_filler_usage_guide` 获取流程和 JSON 结构。
 
 模板文件必须是公开可访问的 `HTTP(S)` 地址，支持 `.docx` 和 `.xlsx`。占位符格式为 `{{name}}`。
 
-解析工具返回占位符列表、位置元数据和可直接填写的 `values` 对象。生成工具接收同一模板地址和 JSON 字符串形式的键值映射，例如：
+`inspect_excel_workbook` 返回 XLSX 工作表布局元数据，以及非空单元格的坐标、值、公式、类型和样式 ID。`insert_excel_placeholders` 根据固定格式的操作 JSON 校验并插入占位符；支持替换指定单元格，或每个工作表插入一条复制样式、行高和公式的明细模板行。解析工具返回占位符列表、位置元数据和可直接填写的 `values` 对象。生成工具接收同一模板地址和 JSON 字符串形式的键值映射，例如：
 
 ```json
 {"customer_name":"张三","amount":123}
