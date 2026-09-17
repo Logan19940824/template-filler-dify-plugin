@@ -58,6 +58,8 @@ identity:
 tools:
   - tools/parse_word_template.yaml
   - tools/fill_word_template.yaml
+  - tools/inspect_word_document.yaml
+  - tools/insert_word_placeholders.yaml
   - tools/parse_excel_template.yaml
   - tools/inspect_excel_workbook.yaml
   - tools/insert_excel_placeholders.yaml

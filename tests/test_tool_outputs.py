@@ -8,6 +8,7 @@ import tools.template_filler as template_tools
 from tools.template_filler import (
     FillExcelTemplateTool,
     FillWordTemplateTool,
+    InsertWordPlaceholdersTool,
     MarkdownToExcelTool,
     MarkdownToWordTool,
     TemplateFillerUsageGuideTool,
@@ -98,6 +99,19 @@ def test_template_fill_tools_upload_result(
     )
 
     _assert_uploaded_result(messages, upload, filename, mime_type)
+
+
+def test_insert_word_placeholders_uploads_result(monkeypatch: pytest.MonkeyPatch) -> None:
+    upload = UploadStub()
+    monkeypatch.setattr(template_tools, "_fill", lambda url, suffix, handler, values: b"doc")
+    monkeypatch.setattr(template_tools, "parse_values", lambda values: {"document_sha256": "hash", "operations": [{}]})
+
+    messages = list(_tool(InsertWordPlaceholdersTool, upload)._invoke({
+        "template_url": "https://example.test/template.docx",
+        "operations": "{}",
+    }))
+
+    _assert_uploaded_result(messages, upload, "placeholder_template.docx", template_tools.WORD_MIME_TYPE)
 
 
 def test_upload_requires_download_url(monkeypatch: pytest.MonkeyPatch) -> None:

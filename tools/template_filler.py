@@ -14,7 +14,9 @@ from template_filler.services import (
     fill_excel,
     fill_word,
     inspect_excel_workbook,
+    inspect_word_document,
     insert_excel_placeholders,
+    insert_word_placeholders,
     markdown_to_excel,
     markdown_to_word,
     parse_excel,
@@ -39,6 +41,28 @@ def _usage_guide() -> str:
 3. 调用 `insert_excel_placeholders`，得到含占位符的 XLSX 模板链接。
 4. 调用 `parse_excel_template`，确认占位符、工作表和单元格坐标符合预期。
 5. 准备 `values` JSON，调用 `fill_excel_template` 生成最终文件。
+
+## Word 模板工作流
+
+1. 调用 `inspect_word_document`，读取正文、表格、精确文本范围和空白位置。
+2. 根据业务要求生成 `replace_text_range` 和可选的 `delete_empty_rows` 操作。
+3. 调用 `insert_word_placeholders`，得到含占位符的 DOCX 模板链接。
+4. 调用 `parse_word_template` 复核占位符，再调用 `fill_word_template` 填充数据。
+
+检查结果中 `blocks` 保留正文和表格的原文顺序；`paragraphs` 是正文段落，`tables[].rows[].cells[].paragraphs` 是表格段落。空段落、空单元格不会省略。使用返回的 `location` 定位，不能按页码定位，也不能把 Word 单元格当作 Excel 坐标。
+
+`insert_word_placeholders.operations` 的根对象是 `{"document_sha256":"检查结果中的指纹","operations":[...]}`，与 Excel 不同，必须带指纹。`replace_text_range` 示例：
+
+```json
+{"document_sha256":"<原文件指纹>","operations":[{"type":"replace_text_range","location":{"table":0,"row":1,"cell":1,"paragraph":0},"expected_text":"","start":0,"end":0,"placeholder":"{{租户[].室号}}"}]}
+```
+
+- `expected_text` 必须原样复制目标段落的完整 `text`，包括空格；`start/end` 是原段落中的 Python Unicode 字符下标，从 0 开始、左闭右开。两者相同表示插入，`0,0` 可写入空段落。
+- 优先复制 `blank_spans` 或 `runs` 中的范围。替换空白会继承该范围第一个字符的格式；仅在标签后插入会继承标签最后一个字符的格式。要保留下划线，替换带下划线的空白范围。
+- 所有操作都基于原文件坐标，不能重叠或重复。文档指纹或原文不一致时应重新检查，不能猜测新坐标。
+- 删除样例空行使用 `{"type":"delete_empty_rows","table":0,"rows":[2,3]}`。仅删除明确指定的纯空白、无合并行，不能删除正在写入占位符的行，也不能删除表格全部行。
+- 明细表保留一个模板行，字段使用同一个对象数组，例如 `{{租户[]._index}}` 和 `{{租户[].公司名}}`。后续填充按数组长度复制行；空数组删除模板行。
+- 查看 `unsupported_features`；`editable:false` 的段落和纵向合并延续单元格不可修改。页眉页脚、文本框、嵌套表格、域、修订、超链接、制表符和换行等复杂段落不在首版编辑范围内。不要声称已覆盖这些区域。
 
 ## 工具参数的严格格式
 
@@ -121,9 +145,11 @@ def _usage_guide() -> str:
 - `parse_excel_template(template_url)`：验证 XLSX 模板的占位符。
 - `fill_excel_template(template_url, values)`：`values` 必须是 JSON 字符串，根对象直接为业务字段对象；填充 XLSX 并返回下载链接。
 - `parse_word_template(template_url)` 与 `fill_word_template(template_url, values)`：解析和填充 DOCX。
+- `inspect_word_document(template_url)`：返回 DOCX 正文与表格结构、文档指纹及精确文字范围。
+- `insert_word_placeholders(template_url, operations)`：校验指纹和原文后插入占位符，并可删除明确指定的空白表格行。
 - `markdown_to_word(markdown_content, output_filename)` 与 `markdown_to_excel(markdown_content, output_filename)`：仅用于将 Markdown 导出为新文件，不能用于保留既有 Excel 样式的模板改造。
 
-完成 Excel 模板改造后，必须用 `parse_excel_template` 复核生成文件。"""
+完成模板改造后，必须用对应的 `parse_excel_template` 或 `parse_word_template` 复核生成文件。"""
 
 
 def _download(url: str, suffix: str) -> Path:
@@ -194,6 +220,18 @@ class FillWordTemplateTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
         blob = _fill(tool_parameters["template_url"], ".docx", fill_word, parse_values(tool_parameters["values"]))
         yield _upload_result(self, "filled.docx", blob, WORD_MIME_TYPE)
+
+
+class InspectWordDocumentTool(Tool):
+    def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+        yield self.create_json_message(_parse(tool_parameters["template_url"], ".docx", inspect_word_document))
+
+
+class InsertWordPlaceholdersTool(Tool):
+    def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+        operations = parse_values(tool_parameters["operations"])
+        blob = _fill(tool_parameters["template_url"], ".docx", insert_word_placeholders, operations)
+        yield _upload_result(self, "placeholder_template.docx", blob, WORD_MIME_TYPE)
 
 
 class ParseExcelTemplateTool(Tool):

@@ -125,6 +125,7 @@ celerybeat.pid
 .pytest-tmp/
 .tmp/
 fixtures/
+docs/
 _assets/图片 5.png
 tests/
 env/

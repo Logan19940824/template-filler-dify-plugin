@@ -1,6 +1,8 @@
 # 模板填充器
 
-插件提供九个工具：`template_filler_usage_guide`、`parse_word_template`、`fill_word_template`、`parse_excel_template`、`inspect_excel_workbook`、`insert_excel_placeholders`、`fill_excel_template`、`markdown_to_word`、`markdown_to_excel`。建议智能体先调用 `template_filler_usage_guide` 获取流程和 JSON 结构。
+插件提供十一个工具，并新增 `inspect_word_document` 与 `insert_word_placeholders`：前者返回 DOCX 正文、表格、文字范围、空白位置和文档指纹；后者校验原文后插入占位符，并可删除明确指定的空白表格行。建议智能体先调用 `template_filler_usage_guide` 获取流程和 JSON 结构。
+
+Word 的完整输入示例、台账字段映射和支持范围见 [Word 模板工作流](../docs/WORD_TEMPLATE_WORKFLOW.md)。
 
 模板文件必须是公开可访问的 `HTTP(S)` 地址，支持 `.docx` 和 `.xlsx`。占位符格式为 `{{name}}`。
 

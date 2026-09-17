@@ -9,7 +9,7 @@
 
 插件不需要配置第三方账号或凭据。模板由调用方提供公开的 HTTP(S) 地址，生成的文件上传至 Dify 文件服务，再以下载链接形式返回。因此，Dify Agent 节点即使不能直接消费二进制文件，也可以继续向用户提供生成结果。
 
-当前版本为 `0.1.3`，要求 Python 3.12，插件类型为 Dify `tool`。
+当前版本为 `0.1.4`，要求 Python 3.12，插件类型为 Dify `tool`。
 
 ## 2. 目标场景
 
@@ -20,13 +20,15 @@
 
 ## 3. 对外功能
 
-插件注册了 9 个 Dify 工具，均由 `provider/template_filler.yaml` 声明，并由 `tools/template_filler.py` 实现。
+插件注册了 11 个 Dify 工具，均由 `provider/template_filler.yaml` 声明，并由 `tools/template_filler.py` 实现。
 
 | 工具 | 输入 | 输出 | 用途 |
 | --- | --- | --- | --- |
 | `template_filler_usage_guide` | 无 | 推荐流程、输入结构、操作 JSON 与安全规则 | 指导智能体使用其他工具 |
 | `parse_word_template` | DOCX 模板的公开 URL | 占位符、出现位置、默认 `values` 对象 | 识别 Word 模板需要的数据字段 |
 | `fill_word_template` | DOCX 模板 URL、占位符值 JSON | 生成文件的 Dify 下载链接 | 填充 Word 模板 |
+| `inspect_word_document` | DOCX 原文件的公开 URL | 文档指纹、正文和表格结构、文字和空白范围 | 为模型规划占位符提供准确位置 |
+| `insert_word_placeholders` | DOCX 原文件 URL、操作 JSON | 占位符模板的 DOCX 下载链接 | 校验指纹和原文后写入占位符、删除指定空白行 |
 | `parse_excel_template` | XLSX 模板的公开 URL | 占位符、工作表/单元格位置、默认 `values` 对象 | 识别 Excel 模板需要的数据字段 |
 | `inspect_excel_workbook` | XLSX 工作簿的公开 URL | 工作表布局与非空单元格数据 | 为智能体理解既有工作簿并规划占位符位置提供结构化上下文 |
 | `insert_excel_placeholders` | XLSX 工作簿 URL、固定格式操作 JSON | 插入占位符后的 XLSX 下载链接 | 校验并写入指定现有单元格的占位符 |
@@ -105,9 +107,13 @@ Word 解析直接读取 DOCX 压缩包中的 `word/document.xml`，扫描正文�
 
 填充时，普通字段会替换正文段落和表格单元格段落中的文本。对于 Word 常见的“一个占位符被拆成多个文本 run”的情况，插件会先合并段落文本后替换，因此 `{{order_` 与 `id}}` 分置于两个 run 时仍可识别。
 
-数组字段会复制包含字段的正文段落或整张表格行。复制过程基于原始 XML 节点，因此会保留该段落或行已有的 Word XML 内容与样式结构；替换后的文本写入节点时，同一段落原先分段的字符样式不会逐段重建。
+数组字段会复制包含字段的正文段落或整张表格行。复制过程基于原始 XML 节点，保留已有样式。普通字段和循环字段均按占位符范围跨文字片段替换，新值继承占位符首字符格式，前后文本的格式保持不变。
 
 当前处理范围限于 `word/document.xml` 中的正文段落和正文表格。页眉、页脚、批注、文本框、脚注、尾注及其他 DOCX 部件不在扫描和替换范围内。
+
+`inspect_word_document` 会进一步返回正文和表格中的完整文本、文字片段范围、连续空白范围、空行及文档 SHA-256 指纹。上游模型据此生成精确的字符范围操作；`insert_word_placeholders` 在核对指纹和原文后写入占位符，并可删除明确指定的纯空白表格行。所有字符下标均从 0 开始，范围采用左闭右开形式。
+
+检查结果通过 `blocks` 表达原文顺序，`paragraphs` 存储正文段落，`tables[].rows[].cells[].paragraphs` 存储表格段落。每段包含 `location`、原样 `text`、`runs`、`blank_spans` 和 `editable`。表格还返回网格宽度、物理单元格索引、网格列号与合并信息。`unsupported_features` 标记未完整处理的复杂结构，`editable:false` 的目标会拒绝编辑。具体接口与台账示例见 [Word 模板工作流](WORD_TEMPLATE_WORKFLOW.md)。
 
 ## 6. Excel 模板处理
 

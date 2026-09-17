@@ -1,0 +1,28 @@
+identity:
+  name: insert_word_placeholders
+  author: modsdom
+  label: {en_US: Insert Word placeholders, zh_Hans: 插入 Word 占位符, pt_BR: Inserir placeholders no Word, ja_JP: Word プレースホルダーを挿入}
+description:
+  human:
+    en_US: Apply validated placeholder and empty-row operations to a DOCX document.
+    zh_Hans: 对 DOCX 文档执行经过校验的占位符和空行操作。
+    pt_BR: Aplica operações validadas de placeholders e linhas vazias a um DOCX.
+    ja_JP: 検証済みのプレースホルダーと空行操作を DOCX に適用します。
+  llm: Insert placeholders at exact paragraph ranges returned by inspect_word_document and optionally delete explicitly selected empty table rows. Return a DOCX download link.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Document URL, zh_Hans: 文档 URL, pt_BR: URL do documento, ja_JP: 文書 URL}
+    human_description: {en_US: Public HTTP(S) URL of the inspected DOCX., zh_Hans: 已检查 DOCX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público do DOCX inspecionado., ja_JP: 検査済み DOCX の公開 HTTP(S) URL。}
+    llm_description: The exact DOCX URL used with inspect_word_document.
+    form: llm
+  - name: operations
+    type: string
+    required: true
+    label: {en_US: Word operations JSON, zh_Hans: Word 操作 JSON, pt_BR: JSON de operações Word, ja_JP: Word 操作 JSON}
+    human_description: {en_US: JSON object containing the document hash and operations., zh_Hans: 包含文档指纹和操作数组的 JSON 对象。, pt_BR: Objeto JSON com hash do documento e operações., ja_JP: 文書ハッシュと操作配列を含む JSON オブジェクト。}
+    llm_description: 'JSON string {"document_sha256":"hash from inspection","operations":[...]}. replace_text_range requires location ({"paragraph":0} or {"table":0,"row":1,"cell":0,"paragraph":0}), exact full expected_text, 0-based Python Unicode start/end (end exclusive; equal means insert), and one placeholder such as {{name}}. delete_empty_rows requires table and a non-empty rows array. All coordinates refer to the original document. Never edit editable:false paragraphs or overlap operations. Call template_filler_usage_guide for examples.'
+    form: llm
+extra:
+  python: {source: tools/insert_word.py}

@@ -1,0 +1,21 @@
+identity:
+  name: inspect_word_document
+  author: modsdom
+  label: {en_US: Inspect Word document, zh_Hans: 检查 Word 文档, pt_BR: Inspecionar documento Word, ja_JP: Word 文書を検査}
+description:
+  human:
+    en_US: Return DOCX body paragraphs, tables, text runs, and blank positions for template design.
+    zh_Hans: 返回 DOCX 正文段落、表格、文字片段和空白位置，用于设计模板。
+    pt_BR: Retorna parágrafos, tabelas, trechos de texto e posições vazias do DOCX.
+    ja_JP: DOCX の本文段落、表、テキスト範囲、空白位置を返します。
+  llm: Inspect a DOCX before proposing placeholders. Returns document_sha256, blocks in original order, paragraphs and tables/rows/cells/paragraphs including empty content, runs and blank_spans. Preserve exact text and use returned locations and Unicode character ranges in insert_word_placeholders. Check unsupported_features and never edit editable:false paragraphs.
+parameters:
+  - name: template_url
+    type: string
+    required: true
+    label: {en_US: Document URL, zh_Hans: 文档 URL, pt_BR: URL do documento, ja_JP: 文書 URL}
+    human_description: {en_US: Public HTTP(S) URL of a DOCX file., zh_Hans: DOCX 文件的公开 HTTP(S) 地址。, pt_BR: URL HTTP(S) público de um DOCX., ja_JP: DOCX ファイルの公開 HTTP(S) URL。}
+    llm_description: Public HTTP(S) URL of the original DOCX document.
+    form: llm
+extra:
+  python: {source: tools/inspect_word.py}
